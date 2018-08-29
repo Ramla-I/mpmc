@@ -28,17 +28,23 @@
 // policies, either expressed or implied, of Dmitry Vyukov.
 //
 
+#![no_std]
 #![allow(missing_docs, dead_code)]
+#![feature(alloc)]
 
 // http://www.1024cores.net/home/lock-free-algorithms/queues/bounded-mpmc-queue
 
 // This queue is copy pasted from old rust stdlib.
 
-use std::sync::Arc;
-use std::cell::UnsafeCell;
 
-use std::sync::atomic::AtomicUsize;
-use std::sync::atomic::Ordering::{Relaxed, Release, Acquire};
+
+extern crate alloc;
+
+use alloc::arc::Arc;
+use core::cell::UnsafeCell;
+use alloc::Vec;
+use core::sync::atomic::AtomicUsize;
+use core::sync::atomic::Ordering::{Relaxed, Release, Acquire};
 
 struct Node<T> {
     sequence: AtomicUsize,
